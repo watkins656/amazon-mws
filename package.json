@@ -1,0 +1,16 @@
+{
+  "name": "amazon-mws",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "amazon-mws": "^0.0.19",
+    "firebase": "^5.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "MIT"
+}
