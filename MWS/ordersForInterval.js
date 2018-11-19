@@ -9,10 +9,6 @@ let MWSAuthToken = process.env.MWS_AUTH_TOKEN;
 let mysql = require("mysql");
 let inquirer = require('inquirer');
 let connection = require('../config/connection')
-connection.connect(function (err) {
-    if (err) throw err;
-    console.log("connected as id " + connection.threadId + "\n");
-});
 
 
 
