@@ -4,9 +4,12 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "amazon-mws": "0.0.23",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.0",
+    "inquirer": "^6.2.0",
+    "moment": "^2.22.2",
     "mysql": "^2.16.0",
     "papaparse": "^4.6.1"
   },

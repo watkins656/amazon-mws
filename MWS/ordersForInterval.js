@@ -296,7 +296,7 @@ function orders() {
 //     }
 // }
 // orders.request();
-setInterval(ordersObject.getLastRunDate, 48000);
+setInterval(ordersObject.getLastRunDate, 60000);
 // ordersObject.getLastRunDate();
 
 
