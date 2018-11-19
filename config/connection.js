@@ -1,4 +1,8 @@
+let dotenv = require('dotenv').config({ path: __dirname + '/../.env' })
+
+
 let mySQLPassword = process.env.MYSQL_PASSWORD;
+
 // Set up MySQL connection.
 var mysql = require("mysql");
 let connection;

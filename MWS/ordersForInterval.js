@@ -1,4 +1,4 @@
-let dotenv = require("dotenv").config();
+let dotenv = require("dotenv").config({ path: __dirname + '/../.env' });
 let moment = require('moment');
 var accessKey = process.env.AWS_ACCESS_KEY_ID || 'YOUR_KEY';
 var accessSecret = process.env.AWS_SECRET_ACCESS_KEY || 'YOUR_SECRET';
@@ -41,16 +41,22 @@ function orders() {
         let query = connection.query(
             "SELECT MAX(PurchaseDate)as date FROM orders",
             function (err, res) {
-                date = new Date(res[0].date)
-                updateAfter = moment(date.setDate(date.getDate() - 3)).toISOString();
+                if(res){
+
+                    date = new Date(res[0].date);
+                    updateAfter = moment(date.setDate(date.getDate() - 3)).toISOString();
+                }else{
+                    date = new Date();
+                }
                 request();
                 // Call updateProduct AFTER the INSERT completes
             }
         )
     };
 
-    function request() {
-        amazonMws.orders.search({
+    function request(NextToken) {
+        console.log("Running request");
+        amazonMws.orders.search((NextToken)?{
             'Version': '2013-09-01',
             'Action': action,
             'SellerId': SellerID,
@@ -58,6 +64,16 @@ function orders() {
             'MarketplaceId.Id.1': 'ATVPDKIKX0DER',
             'LastUpdatedAfter': updateAfter,
             'LastUpdatedBefore': updateBefore,
+            'NextToken': NextToken,
+        }:{
+            'Version': '2013-09-01',
+            'Action': action,
+            'SellerId': SellerID,
+            'MWSAuthToken': MWSAuthToken,
+            'MarketplaceId.Id.1': 'ATVPDKIKX0DER',
+            'LastUpdatedAfter': updateAfter,
+            'LastUpdatedBefore': updateBefore,
+            
         }, (error, response) => {
             if (error) {
                 console.log('request error ', error);
@@ -66,11 +82,12 @@ function orders() {
             let orders = response.Orders.Order;
             insertOrders(orders);
             if (response.NextToken) { console.log('Next Token: ' + response.NextToken); }
-            // if (response.NextToken) {
-            //     NextToken = (response.NextToken);
-            //     action = 'ListOrdersByNextToken'
-            //     // request();
-            // }
+            if (response.NextToken) {
+                NextToken = (response.NextToken);
+                action = 'ListOrdersByNextToken'
+                setTimeout(
+                    function(){request(NextToken)},60000);
+            }
             // else {
             // require('./orderItems.js');
             // main();
@@ -287,7 +304,7 @@ function orders() {
 //     }
 // }
 // orders.request();
-setInterval(ordersObject.getLastRunDate, 60000);
+setInterval(ordersObject.getLastRunDate, 180000);
 // ordersObject.getLastRunDate();
 
 
