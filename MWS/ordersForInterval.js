@@ -8,13 +8,7 @@ let SellerID = process.env.MWS_SELLER_ID;
 let MWSAuthToken = process.env.MWS_AUTH_TOKEN;
 let mysql = require("mysql");
 let inquirer = require('inquirer');
-let connection = mysql.createConnection({
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: mySQLPassword,
-    database: "amazon"
-});
+let connection = require('../config/connection')
 connection.connect(function (err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
