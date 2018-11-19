@@ -6,17 +6,7 @@ let MWSAuthToken = process.env.MWS_AUTH_TOKEN;
 let mySQLPassword = process.env.MYSQL_PASSWORD;
 
 var mysql = require("mysql");
-let connection = mysql.createConnection({
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: mySQLPassword,
-    database: "amazon"
-});
-connection.connect(function (err) {
-    if (err) throw err;
-    console.log("connected as id " + connection.threadId + "\n");
-});
+let connection = require('../config/connection');
 
 getOrders();
 let orderItems = {
