@@ -1,0 +1,12 @@
+<h1>Customer Order Items!</h1>
+
+<h2>Customer Orders that are pending!</h2>
+
+<ul>
+  {{#each customerOrderItems}}
+    {{#if true }}
+      {{> customerOrders/customerOrderItem-block pending=true}}
+    {{/if}}
+  {{/each}}
+</ul>
+

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="/assets/css/style.css" type="text/css" />
+	<title>MVC With Cats!</title>
+	<script src="https://code.jquery.com/jquery.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+	<script src="/assets/js/cats.js"></script>
+	
+<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBXQ0ey7DLVN3SaP2zUIRhA1mCk5LsEdyw",
+    authDomain: "seller-central-app.firebaseapp.com",
+    databaseURL: "https://seller-central-app.firebaseio.com",
+    projectId: "seller-central-app",
+    storageBucket: "seller-central-app.appspot.com",
+    messagingSenderId: "738217015688"
+  };
+  firebase.initializeApp(config);
+</script>
+</head>
+
+<body>
+{{> navbar}}
+	{{{ body }}}
+</body>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</html>

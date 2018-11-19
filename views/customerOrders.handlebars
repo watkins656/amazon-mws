@@ -1,0 +1,24 @@
+<h1>Customer Orders!</h1>
+
+<h2>Customer Orders that are pending!</h2>
+      {{> customerOrders/amazonSellBy-block}}
+
+<ul>
+  {{#each customerOrders}}
+    {{#iff OrderStatus '==' 'Pending'}}
+      {{> customerOrders/customerOrder-block pending=true}}
+    {{/iff}}
+  {{/each}}
+</ul>
+
+<h2>Customer Orders that are not pending!</h2>
+
+<ul>
+  {{#each customerOrders}}
+    {{#unless pending}}
+    {{OrderStatus}}
+      {{> customerOrders/customerOrder-block sleep=false}}
+    {{/unless}}
+  {{/each}}
+</ul>
+

@@ -1,0 +1,116 @@
+<div id="login">
+
+    <form>
+        Email:<br>
+        <input type="text" id="email" name="email"><br>
+        Password:<br>
+        <input type="password" id="password" name="password">
+        <button type="submit" id="login-button">Login</button>
+        <button type="submit" id="new-user-button">Create New User</button>
+        <button type="submit" id="sign-out-button">Sign Out</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+<script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyBXQ0ey7DLVN3SaP2zUIRhA1mCk5LsEdyw",
+        authDomain: "seller-central-app.firebaseapp.com",
+        databaseURL: "https://seller-central-app.firebaseio.com",
+        projectId: "seller-central-app",
+        storageBucket: "seller-central-app.appspot.com",
+        messagingSenderId: "738217015688"
+    };
+    firebase.initializeApp(config);
+
+    var currentUser = firebase.auth().currentUser;
+
+    if (currentUser) {
+        console.log("currentUser: " + currentUser); // User is signed in.
+    } else {
+        // No user is signed in.
+    }
+    $("#sign-out-button").on("click", (event) => {
+        event.preventDefault();
+
+        firebase.auth().signOut().then(function () {
+            // Sign-out successful.
+        }).catch(function (error) {
+            // An error happened.
+            console.log(error)
+        });
+    })
+    $("#new-user-button").on("click", (event) => {
+        event.preventDefault();
+        var email = $("#email").val().trim();
+        var password = $("#password").val().trim();
+        console.log("email: " + email + " password: " + password);
+
+        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // ...
+            console.log("error: " + errorMessage)
+        });
+    })
+    $("#login-button").on("click", (event) => {
+        event.preventDefault();
+        var email = $("#email").val().trim();
+        var password = $("#password").val().trim();
+        console.log("email: " + email + " password: " + password);
+
+        firebase.auth().signInWithEmailAndPassword(email, password).then(function (firebaseUser) {
+            // Success 
+            console.log(JSON.stringify(firebaseUser, null, 2))
+            let uid = firebaseUser.user.uid;
+            location.assign("/landing/" + uid)
+            $.get("/landing/" + uid, function (data) {
+                console.log(data);
+                if (data) {
+
+                }
+                else {
+
+                }
+            });
+        }).catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+
+            // ...
+            alert("Error: " + errorMessage)
+
+        });
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                console.log(user.email + "attempted log - in");
+                // User is signed in.
+                console.log("user object: " + JSON.stringify(user, null, 2));
+
+            } else {
+                // No user is signed in.
+            }
+        });
+    })
+
+
+
+</script>
+<script>
+
+</script>
+
+
+
+
+<div id="where-to" style="display: none;">
+
+    <h1>Where To?</h1>
+
+    <a href="/customerOrders">Customer Orders</a> | <a href="/customerOrderItems">Customer Order Items</a>
+
+</div>

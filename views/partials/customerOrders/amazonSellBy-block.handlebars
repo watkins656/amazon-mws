@@ -1,0 +1,14 @@
+<p id="MyP">Amazon SellBy Date is: </p>
+
+<script>
+
+  Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
+
+
+    var today = new Date();
+    document.getElementById("MyP").innerHTML += today.addDays(105);
+</script>

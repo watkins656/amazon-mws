@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<li>
+  <div class="row">
+    <div class="col-sm">
+      {{product-name}}
+    </div>
+    <div class="col-sm">
+      <span>
+        Total Quantity: {{total-quantity}}
+      </span><span>Sales in last 30 days: {{units-shipped-last-30-days}}</span>
+    </div>
+    <div class="col-sm">
+      {{#iff unsellable-quantity '>' 0}}
+      <span>
+        <a href="http://asin.info/a/{{asin}}" class="btn btn-warning" data-id="{{id}}">
+          This SKU has UNSELLABLE units - "Click to View Live on Amazon"
+        </a>
+        {{/iff}}
+        {{#iff units-shipped-last-30-days '==' 0}}
+        <a href="http://asin.info/a/{{asin}}" class="btn btn-danger" data-id="{{id}}">
+          This SKU has SLOW SALES - "Click to View Live on Amazon"
+        </a>
+        {{/iff}}
+      </span>
+      <div class="progress">
+        <div class="progress-bar 
+       {{#iff percent '>' 0}}
+       {{#iff percent '<=' 75}}
+        progress-bar-danger
+       {{/iff}}{{/iff}}
+       {{#iff percent '>' 75}}
+       {{#iff percent '<=' 90}}
+       progress-bar-warning
+       {{/iff}}{{/iff}}
+       {{#iff percent '>' 90}}
+       {{#iff percent '<=' 110}}
+       progress-bar-success
+       {{/iff}}{{/iff}}
+       {{#iff percent '>' 110}}
+        progress-bar-info
+       {{/iff}}"
+          role="progressbar" aria-valuenow="{{id}}" aria-valuemin="0" aria-valuemax="100" style="width:{{percent}}%">
+          <span class="">{{percent}}% Stocked</span>
+        </div>
+
+      </div>      <div class="progress">
+        <div class="progress-bar progress-bar-success"
+          role="progressbar" aria-valuenow="{{id}}" aria-valuemin="0" aria-valuemax="100" style="width:90%">
+          <span class="">90% Stocked</span>
+        </div>
+
+      </div>
+      {{#iff percent '>' 100}}
+      <div class="btn btn-danger" data-id="{{id}}">
+        This SKU is OVERSTOCKED
+      </div>
+      {{/iff}}
+    </div>
+  </div>
+</li>

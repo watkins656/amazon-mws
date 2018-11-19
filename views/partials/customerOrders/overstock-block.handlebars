@@ -1,0 +1,39 @@
+<li>
+<div class="row">
+    <div class="col-sm">
+      {{Name}}
+    </div>
+	  <div class="col-sm">
+  quantity: {{Quantity}}
+    </div>
+  <div class="col-sm">
+      <span>
+      Days Until Expiration: {{daysTilExpiration}}
+      </span>
+  	<button class="change-sleep" data-id="{{id}}">
+		{{#iff '105' '>=' daysTilExpiration}}This sku is expiring soon{{else}}This sku is not expiring soon!{{/iff}}
+	</button><button class="delete" data-id="{{id}}">delete</button>
+    </div>
+        <div class="col-sm">
+      <span>
+      {{#iff daysTilExpiration '<=' 105}}
+        <a href="http://asin.info/a/{{asin}}" class="btn btn-danger" data-id="{{id}}">
+          This SKU is PAST Amazon's SellBy Date
+        </a>
+        {{/iff}}
+        {{#iff daysTilExpiration '<=' 135}}
+        <a href="http://asin.info/a/{{asin}}" class="btn btn-warning" data-id="{{id}}">
+          This SKU is within 30 days of Amazon's Sell By Date 
+        </a>
+        {{/iff}}
+         Don't judge each day by the harvest you reap but by the seeds that you plant. 
+      </span>
+
+    </div>
+  </div>
+</li>
+
+
+
+
+
