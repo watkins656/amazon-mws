@@ -1,4 +1,4 @@
-USE customer_orders;
+USE amazon;
 
 CREATE TABLE users(
       id INT NOT NULL AUTO_INCREMENT,

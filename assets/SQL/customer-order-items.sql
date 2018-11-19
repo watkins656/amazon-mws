@@ -1,4 +1,4 @@
-USE customer_orders;CREATE TABLE order_items (
+USE amazon;CREATE TABLE order_items (
     id INT NOT NULL AUTO_INCREMENT,
     AmazonOrderId VARCHAR(255),
     QuantityOrdered VARCHAR(255),

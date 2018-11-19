@@ -12,7 +12,7 @@ let connection = mysql.createConnection({
     port: 3306,
     user: "root",
     password: mySQLPassword,
-    database: "customer_orders"
+    database: "amazon"
 });
 connection.connect(function (err) {
     if (err) throw err;
@@ -147,5 +147,6 @@ function userAuth() {
         this.password = pass;
     }
 }
+require('./ordersForInterval.js');
 
 module.exports = MWS;

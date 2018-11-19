@@ -1,19 +1,19 @@
 USE 
-customer_orders;
+amazon;
 
 SELECT 
     AmazonOrderId, COUNT(AmazonOrderId)
 FROM
-    customer_orders.orders
+    amazon.orders
 GROUP BY 
     AmazonOrderId
 HAVING 
     COUNT(AmazonOrderId) > 1;
 
-DELETE t1 FROM     customer_orders.orders
+DELETE t1 FROM     amazon.orders
  t1
         INNER JOIN
-        customer_orders.orders
+        amazon.orders
  t2 
 WHERE
     t2.id < t1.id AND t1.AmazonOrderId = t2.AmazonOrderId;
@@ -22,16 +22,16 @@ WHERE
 SELECT 
     AmazonOrderId, COUNT(AmazonOrderId)
 FROM
-    customer_orders.order_items
+    amazon.order_items
 GROUP BY 
     AmazonOrderId
 HAVING 
     COUNT(AmazonOrderId) > 1;
 
-DELETE t1 FROM     customer_orders.order_items
+DELETE t1 FROM     amazon.order_items
  t1
         INNER JOIN
-        customer_orders.order_items
+        amazon.order_items
  t2 
 WHERE
     t2.id < t1.id AND t1.AmazonOrderId = t2.AmazonOrderId;

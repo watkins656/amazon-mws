@@ -1,4 +1,4 @@
-USE customer_orders;
+USE amazon;
 DROP TABLE IF EXISTS test_orders;
 CREATE TABLE test_orders (
   id INT NOT NULL AUTO_INCREMENT,

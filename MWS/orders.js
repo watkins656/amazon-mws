@@ -12,7 +12,7 @@ let connection = mysql.createConnection({
     port: 3306,
     user: "root",
     password: mySQLPassword,
-    database: "customer_orders"
+    database: "amazon"
 });
 connection.connect(function (err) {
     if (err) throw err;
@@ -30,12 +30,25 @@ requestTime.setMinutes(now.getMinutes() - 3);
 
 let orders = {
     action: 'ListOrders',
-    updateAfter: new Date('2018-10-20'),    //TODO: update with successful response
+    updateAfter: new Date('2018-11-01'),    //TODO: update with successful response
     updateBefore: requestTime,
-    NextToken: '',
+    getLastRunDate: function () {
+        let query = connection.query(
+            "SELECT MAX(PurchaseDate)as date FROM orders",
+            function (err, res) {
+                console.log(JSON.stringify(res) + " is your date!\n");
+                date = new Date(res[0].date)
+                this.updateAfter = date.setDate(date.getDate() - 3)
+                console.log(this.updateAfter);
+                // Call updateProduct AFTER the INSERT completes
+            }
+        )
 
+
+    },
     //create request
     request: function () {
+        this.getLastRunDate();
         amazonMws.orders.search({
             'Version': '2013-09-01',
             'Action': this.action,
@@ -44,7 +57,6 @@ let orders = {
             'MarketplaceId.Id.1': 'ATVPDKIKX0DER',
             'LastUpdatedAfter': this.updateAfter,
             'LastUpdatedBefore': this.updateBefore,
-
         }, (error, response) => {
             if (error) {
                 console.log('request error ', error);
@@ -55,7 +67,7 @@ let orders = {
             if (response.NextToken) {
                 this.NextToken = (response.NextToken);
                 this.action = 'ListOrdersByNextToken'
-                this.request();
+                // this.request();
             }
             else {
                 require('./orderItems.js');
@@ -125,6 +137,7 @@ let orders = {
             .then((res) => {
                 switch (res.action) {
                     case "UPDATE DATABASE WITH LATEST ORDERS (Recommended)":
+                    this.getLastRunDate();
                         this.request();
                         break;
                     case "GET SALES VELOCITY FOR SKU":

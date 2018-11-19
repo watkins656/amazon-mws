@@ -25,7 +25,7 @@ let reportListRequest = function () {
     amazonMws.reports.search({
         'Version': '2009-01-01',
         'Action': 'GetReportList',
-        'SellerId': SellerID,
+        'SellerId': SellerId,
         'MWSAuthToken': MWSAuthToken,
         //'ReportTypeList.Type.1': 'REPORT_TYPE_LIST' //optional
     }, function (error, response) {
@@ -38,21 +38,38 @@ let reportListRequest = function () {
 };
 
 
-let reportRequest = function () {
+function reportRequest() {
     amazonMws.reports.search({
         'Version': '2009-01-01',
         'Action': 'GetReport',
-        'SellerId': SellerID,
+        'SellerId': SellerId,
         'MWSAuthToken': MWSAuthToken,
-        'ReportId': '11931572916017833'
+        'ReportId': '12174047343017849'
     }, function (error, response) {
         if (error) {
             console.log('error ', error);
             return;
         }
         response.data.forEach(element => {
-                        reports.updateInventoryHealthTable(element);
+            reports.updateInventoryHealthTable(element);
         });
+        let removeDuplicates = connection.query(`
+        
+DELETE t1 FROM     amazon.inventory_health
+t1
+   INNER JOIN
+   amazon.inventory_health
+t2 
+WHERE
+t2.id < t1.id AND t1.sku = t2.sku;
+
+`, (err, res) => {
+                if (err)
+                    console.log(err);
+                else
+                    console.log(res);
+            })
+
         return;
     });
 };

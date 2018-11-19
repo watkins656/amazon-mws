@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS customer_orders;
+DROP DATABASE IF EXISTS amazon;
 
-CREATE DATABASE customer_orders;
+CREATE DATABASE amazon;
 
-USE customer_orders;
+USE amazon;
 
 CREATE TABLE orders (
   id INT NOT NULL AUTO_INCREMENT,

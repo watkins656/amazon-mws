@@ -1,7 +1,6 @@
 let dotenv = require("dotenv").config();
 var accessKey = process.env.AWS_ACCESS_KEY_ID || 'YOUR_KEY';
 var accessSecret = process.env.AWS_SECRET_ACCESS_KEY || 'YOUR_SECRET';
-var  = process.env.AWS_SECRET_ACCESS_KEY || 'YOUR_SECRET';
 let amazonMws = require('amazon-mws')(accessKey, accessSecret);
 let inquirer = require("inquirer");
 let mysql = require("mysql");
@@ -11,8 +10,8 @@ let connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: mysql,
-    database: "customer_orders"
+    password: process.env.MYSQL_PASSWORD,
+    database: "amazon"
 });
 connection.connect(function (err) {
     if (err) throw err;
@@ -23,6 +22,7 @@ let salesVelocity = {
     SKUsArray: [],
     main: function () {
         var query = connection.query(`SELECT SellerSKU from order_items GROUP BY SellerSKU ORDER BY SellerSKU`, (err, results) => {
+            console.log('Here');
             let arr = [];
             results.forEach(element => {
                 if (element.SellerSKU)
@@ -31,7 +31,6 @@ let salesVelocity = {
             this.inquirer();
             return;
         })
-
     },
     inquirer: function () {
         inquirer
@@ -95,6 +94,6 @@ let salesVelocity = {
 
     }
 }
-
 salesVelocity.main();
+
 module.exports = salesVelocity;
