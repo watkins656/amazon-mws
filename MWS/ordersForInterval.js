@@ -72,9 +72,10 @@ function orders() {
             //     // request();
             // }
             // else {
-            require('./orderItems.js');
+            // require('./orderItems.js');
             // main();
             // }
+            return;
         });
     };
 
