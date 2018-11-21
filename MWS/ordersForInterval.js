@@ -79,8 +79,10 @@ function orders() {
                 console.log('request error Code: ', error.Code);
                 if(error.Code == 'RequestThrottled'){
                     console.log('restarting due to request throttled');
-                    setTimeout(request,20000)
+                    setTimeout(
+                        function(){request(NextToken)},60000);
                 }
+                    }
                 return;
             }
             let orders = response.Orders.Order;
