@@ -15,7 +15,7 @@ var overstock = require("../models/overstock.js");
 
 // Create all our routes and set up logic within those routes where required.
 router.get("/", function (req, res) {
-  customerOrder.all(function (data) {
+  customerOrder.allOrdersByPurchaseDate(function (data) {
     var hbsObject = {
       customerOrders: data
     };

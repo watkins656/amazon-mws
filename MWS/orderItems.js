@@ -43,7 +43,7 @@ function getOrders() {
 
                     if (response.length == 0) {
                         orderItems.request(element.AmazonOrderId);
-                        
+
                     }
                 });
         });
