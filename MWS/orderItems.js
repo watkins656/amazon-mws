@@ -29,7 +29,22 @@ let orderItems = {
             }
             let orderItems = response.OrderItems.OrderItem
             orderItems.AmazonOrderId = id;
-            insertOrderItem(orderItems);
+
+            function resolveAfter2Seconds(x) {
+                return new Promise(insertOrderItem => {
+                    setTimeout(() => {
+                        insertOrderItem(orderItems);
+                    }, 2000);
+                });
+            }
+            
+            async function f1() {
+                var x = await resolveAfter2Seconds(10);
+                console.log(x); // 10
+
+            }
+            f1();
+
         });
     }
 
@@ -39,8 +54,11 @@ function getOrders() {
         results.forEach(element => {
             let q = connection.query("SELECT AmazonOrderId FROM order_items WHERE ?", { AmazonOrderId: element.AmazonOrderId },
                 (err, response) => {
+
+
                     if (response.length == 0) {
                         orderItems.request(element.AmazonOrderId);
+                        console.log(x);
                     }
                 });
         });
@@ -73,10 +91,10 @@ function insertOrderItem(order) {
             ItemTax: order.ItemTax,
             PromotionDiscountTax: order.PromotionDiscountTax
         },
-         (err, res)=> {
-          if(err)  console.log(err);
-          else
-            console.log(res + " order inserted!\n");
+        (err, res) => {
+            if (err) console.log(err);
+            else
+                console.log(res + " order inserted!\n");
             // Call updateProduct AFTER the INSERT completes
         }
     )

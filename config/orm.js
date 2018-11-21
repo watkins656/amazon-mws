@@ -42,7 +42,7 @@ function objToSql(ob) {
 // Object for all our SQL statement functions.
 var orm = {
   all: function (tableInput, cb) {
-    var queryString = "SELECT * FROM " + tableInput + ";";
+    var queryString = "SELECT * FROM " + tableInput + "ORDER BY PurchaseDate DESC;";
     connection.query(queryString, function (err, result) {
       if (err) {
         throw err;
