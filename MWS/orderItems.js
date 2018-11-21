@@ -29,22 +29,7 @@ let orderItems = {
             }
             let orderItems = response.OrderItems.OrderItem
             orderItems.AmazonOrderId = id;
-
-            function resolveAfter2Seconds(x) {
-                return new Promise(insertOrderItem => {
-                    setTimeout(() => {
-                        insertOrderItem(orderItems);
-                    }, 2000);
-                });
-            }
-            
-            async function f1() {
-                var x = await resolveAfter2Seconds(10);
-                console.log(x); // 10
-
-            }
-            f1();
-
+            insertOrderItem(orderItems);
         });
     }
 
@@ -58,7 +43,7 @@ function getOrders() {
 
                     if (response.length == 0) {
                         orderItems.request(element.AmazonOrderId);
-                        console.log(x);
+                        
                     }
                 });
         });
