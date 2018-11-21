@@ -3,7 +3,7 @@ var orm = require("../config/orm.js");
 
 var customerOrder = {
   allOrdersByPurchaseDate: function (cb) {
-    orm.all("orders", function (res) {
+    orm.allOrdersByPurchaseDate("orders", function (res) {
       cb(res);
     });
   },

@@ -25,7 +25,7 @@ router.get("/", function (req, res) {
 });
 
 router.get("/landing/:uid", function (req, res) {
-  customerOrder.all(function (data) {
+  customerOrder.allOrdersByPurchaseDate(function (data) {
     var hbsObject = {
       customerOrders: data
     };
@@ -64,7 +64,7 @@ router.get("/inventoryHealth", function (req, res) {
 });
 
 router.get("/customerOrders", function (req, res) {
-  customerOrder.all(function (data) {
+  customerOrder.allOrdersByPurchaseDate(function (data) {
     var hbsObject = {
       customerOrders: data
     };
