@@ -44,7 +44,7 @@ function orders() {
                 if(res){
 
                     date = new Date(res[0].date);
-                    updateAfter = moment(date.setDate(date.getDate() - 3)).toISOString();
+                    updateAfter = moment(date.setDate(date.getDate() - 2)).toISOString();
                 }else{
                     date = new Date();
                 }
@@ -76,7 +76,11 @@ function orders() {
             
         }, (error, response) => {
             if (error) {
-                console.log('request error ', error);
+                console.log('request error Code: ', error.Code);
+                if(error.Code == 'RequestThrottled'){
+                    console.log('restarting due to request throttled');
+                    setTimeout(request,20000)
+                }
                 return;
             }
             let orders = response.Orders.Order;

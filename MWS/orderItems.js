@@ -1,7 +1,8 @@
-let dotenv = require("dotenv").config();
+let dotenv = require("dotenv").config({ path: __dirname + '/../.env' });
 var accessKey = process.env.AWS_ACCESS_KEY_ID || 'YOUR_KEY';
 var accessSecret = process.env.AWS_SECRET_ACCESS_KEY || 'YOUR_SECRET';
 let amazonMws = require('amazon-mws')(accessKey, accessSecret);
+console.log(accessKey);
 let MWSAuthToken = process.env.MWS_AUTH_TOKEN;
 let mySQLPassword = process.env.MYSQL_PASSWORD;
 
@@ -10,8 +11,8 @@ let connection = require('../config/connection');
 
 getOrders();
 let orderItems = {
-    
- SellerId: process.env.MWS_SELLER_ID,
+
+    SellerId: process.env.MWS_SELLER_ID,
     AmazonOrderId: '',
     request: function (id) {
         this.AmazonOrderId = id;
@@ -23,7 +24,7 @@ let orderItems = {
             'AmazonOrderId': this.AmazonOrderId
         }, (error, response) => {
             if (error) {
-                console.log('error ', error);
+                // console.log('error ', error);
                 return;
             }
             let orderItems = response.OrderItems.OrderItem
@@ -72,8 +73,10 @@ function insertOrderItem(order) {
             ItemTax: order.ItemTax,
             PromotionDiscountTax: order.PromotionDiscountTax
         },
-        function (err, res) {
-            console.log(res.affectedRows + " order inserted!\n");
+         (err, res)=> {
+          if(err)  console.log(err);
+          else
+            console.log(res + " order inserted!\n");
             // Call updateProduct AFTER the INSERT completes
         }
     )
