@@ -41,11 +41,11 @@ function orders() {
         let query = connection.query(
             "SELECT MAX(PurchaseDate)as date FROM orders",
             function (err, res) {
-                if(res){
+                if (res) {
 
                     date = new Date(res[0].date);
                     updateAfter = moment(date.setDate(date.getDate() - 2)).toISOString();
-                }else{
+                } else {
                     date = new Date();
                 }
                 request();
@@ -56,7 +56,7 @@ function orders() {
 
     function request(NextToken) {
         console.log("Running request");
-        amazonMws.orders.search((NextToken)?{
+        amazonMws.orders.search((NextToken) ? {
             'Version': '2013-09-01',
             'Action': action,
             'SellerId': SellerID,
@@ -65,41 +65,40 @@ function orders() {
             'LastUpdatedAfter': updateAfter,
             'LastUpdatedBefore': updateBefore,
             'NextToken': NextToken,
-        }:{
-            'Version': '2013-09-01',
-            'Action': action,
-            'SellerId': SellerID,
-            'MWSAuthToken': MWSAuthToken,
-            'MarketplaceId.Id.1': 'ATVPDKIKX0DER',
-            'LastUpdatedAfter': updateAfter,
-            'LastUpdatedBefore': updateBefore,
-            
-        }, (error, response) => {
-            if (error) {
-                console.log('request error Code: ', error.Code);
-                if(error.Code == 'RequestThrottled'){
-                    console.log('restarting due to request throttled');
-                    setTimeout(
-                        function(){request(NextToken)},60000);
-                }
+        } : {
+                'Version': '2013-09-01',
+                'Action': action,
+                'SellerId': SellerID,
+                'MWSAuthToken': MWSAuthToken,
+                'MarketplaceId.Id.1': 'ATVPDKIKX0DER',
+                'LastUpdatedAfter': updateAfter,
+                'LastUpdatedBefore': updateBefore,
+
+            }, (error, response) => {
+                if (error) {
+                    console.log('request error Code: ', error.Code);
+                    if (error.Code == 'RequestThrottled') {
+                        console.log('restarting due to request throttled');
+                        setTimeout(
+                            function () { request(NextToken) }, 60000);
                     }
+                    return;
+                }
+                let orders = response.Orders.Order;
+                insertOrders(orders);
+                if (response.NextToken) { console.log('Next Token: ' + response.NextToken); }
+                if (response.NextToken) {
+                    NextToken = (response.NextToken);
+                    action = 'ListOrdersByNextToken'
+                    setTimeout(
+                        function () { request(NextToken) }, 60000);
+                }
+                // else {
+                // require('./orderItems.js');
+                // main();
+                // }
                 return;
-            }
-            let orders = response.Orders.Order;
-            insertOrders(orders);
-            if (response.NextToken) { console.log('Next Token: ' + response.NextToken); }
-            if (response.NextToken) {
-                NextToken = (response.NextToken);
-                action = 'ListOrdersByNextToken'
-                setTimeout(
-                    function(){request(NextToken)},60000);
-            }
-            // else {
-            // require('./orderItems.js');
-            // main();
-            // }
-            return;
-        });
+            });
     };
 
     function insertOrders(orders) {
