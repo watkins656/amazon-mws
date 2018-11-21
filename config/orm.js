@@ -54,10 +54,16 @@ var orm = {
     var queryString = "SELECT * FROM " + tableInput + " ORDER BY PurchaseDate DESC;";
     connection.query(queryString, function (err, result) {
       if (err) {
-        throw err;
+console.log(err);
       }
-      cb(result);
-    });
+      if(result){
+
+        cb(result);
+      }
+      else{
+        cb({});
+      }
+    }); 
   },
   create: function (table, cols, vals, cb) {
     var queryString = "INSERT INTO " + table;

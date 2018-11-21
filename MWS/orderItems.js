@@ -35,21 +35,22 @@ let orderItems = {
 
 }
 function getOrders() {
-    var query = connection.query("SELECT AmazonOrderId FROM orders", function (err, results) {
-        results.forEach(element => {
-            let q = connection.query("SELECT AmazonOrderId FROM order_items WHERE ?", { AmazonOrderId: element.AmazonOrderId },
-                (err, response) => {
+    var query = connection.query("SELECT AmazonOrderId FROM orders", (err, results) => {
+        if (err) { console.log('error: ' + err); }
+        else {
 
+            results.forEach(element => {
+                let q = connection.query("SELECT AmazonOrderId FROM order_items WHERE ?", { AmazonOrderId: element.AmazonOrderId },
+                    (err, response) => {
 
-                    if (response.length == 0) {
-                        orderItems.request(element.AmazonOrderId);
+                        if (response.length == 0) {
+                            orderItems.request(element.AmazonOrderId);
 
-                    }
-                });
-        });
-
-
-    });
+                        }
+                    });
+            });
+        }
+     });
 }
 function insertOrderItems(orders) {
     orders.forEach(order => {

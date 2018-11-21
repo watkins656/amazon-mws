@@ -7,6 +7,7 @@ let dotenv = require('dotenv').config({ path: __dirname + '/.env' })
 
 const Dustin = process.env.DUSTIN;
 const Megan = process.env.MEGAN;
+const Lenora = process.env.LENORA;
 // Import the model (customerOrder.js) to use its database functions.
 var customerOrder = require("../models/customerOrders.js");
 var customerOrderItem = require("../models/customerOrderItems.js");
@@ -16,9 +17,13 @@ var overstock = require("../models/overstock.js");
 // Create all our routes and set up logic within those routes where required.
 router.get("/", function (req, res) {
   customerOrder.allOrdersByPurchaseDate(function (data) {
-    var hbsObject = {
+    let hbsObject={};
+    if(data){
+
+     hbsObject = {
       customerOrders: data
     };
+  }
     // console.log(hbsObject);
     res.render("index", hbsObject);
   });
@@ -26,13 +31,17 @@ router.get("/", function (req, res) {
 
 router.get("/landing/:uid", function (req, res) {
   customerOrder.allOrdersByPurchaseDate(function (data) {
-    var hbsObject = {
-      customerOrders: data
-    };
+    let hbsObject={};
+    if(data){
 
-    let uid = (req.params.uid);
+     hbsObject = {
+        customerOrders: data
+      };
+      
+    }
+      let uid = (req.params.uid);
     // console.log(hbsObject);
-    if (uid === Dustin || uid === Megan) {
+    if (uid === Dustin || uid === Megan|| uid === Lenora) {
       console.log("correct user");
       res.render("landing", hbsObject);
     }

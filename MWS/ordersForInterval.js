@@ -80,7 +80,7 @@ function orders() {
                     if (error.Code == 'RequestThrottled') {
                         console.log('restarting due to request throttled');
                         setTimeout(
-                            function () { request(NextToken) }, 60000);
+                            function () { request(NextToken) }, 180000);
                     }
                     return;
                 }
@@ -91,7 +91,7 @@ function orders() {
                     NextToken = (response.NextToken);
                     action = 'ListOrdersByNextToken'
                     setTimeout(
-                        function () { request(NextToken) }, 60000);
+                        function () { request(NextToken) }, 180000);
                 }
                 // else {
                 // require('./orderItems.js');
@@ -144,6 +144,7 @@ function orders() {
                 ShippingAddress: order.ShippingAddress
             },
             function (err, res) {
+                console.log(err);
                 console.log(res.affectedRows + " order inserted!\n");
                 // Call updateProduct AFTER the INSERT completes
             }
@@ -326,4 +327,4 @@ setInterval(ordersObject.getLastRunDate, 180000);
 //         console.log("running request");
 //         getLastRunDate()
 //     };
-// }
+// } 
