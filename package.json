@@ -11,7 +11,8 @@
     "inquirer": "^6.2.0",
     "moment": "^2.22.2",
     "mysql": "^2.16.0",
-    "papaparse": "^4.6.1"
+    "papaparse": "^4.6.1",
+    "underscore": "^1.9.1"
   },
   "devDependencies": {},
   "scripts": {

@@ -73,7 +73,6 @@ function orders() {
                 'MarketplaceId.Id.1': 'ATVPDKIKX0DER',
                 'LastUpdatedAfter': updateAfter,
                 'LastUpdatedBefore': updateBefore,
-
             }, (error, response) => {
                 if (error) {
                     console.log('request error Code: ', error.Code);

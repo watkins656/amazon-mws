@@ -1,7 +1,11 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <h1>Customer Orders!</h1>
 
-<h2>Customer Orders that are pending!</h2>
       {{> customerOrders/amazonSellBy-block}}
+<h2>Customer Orders that are pending!</h2>
 
 <ul>
   {{#each customerOrders}}
@@ -16,8 +20,9 @@
 <ul>
   {{#each customerOrders}}
     {{#unless pending}}
-    {{OrderStatus}}
-      {{> customerOrders/customerOrder-block sleep=false}}
+    <span>
+      {{> customerOrders/customerOrder-block pending=false}}   
+    </span>
     {{/unless}}
   {{/each}}
 </ul>

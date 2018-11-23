@@ -1,6 +1,6 @@
 USE `g19kgxd0tyqbpecb`;
 
-CREATE TABLE `inventory_health` (
+CREATE TABLE IF NOT EXISTS `inventory_health` (
 id INT AUTO_INCREMENT NOT NULL,
   `snapshot-date` varchar(135) DEFAULT NULL,
   `sku` varchar(135) DEFAULT NULL,
@@ -54,7 +54,7 @@ createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTA
 ) ;
 
 
-CREATE TABLE `order_items` (
+CREATE TABLE IF NOT EXISTS `order_items` (
 id INT AUTO_INCREMENT NOT NULL,
   `AmazonOrderId` varchar(255) DEFAULT NULL,
   `QuantityOrdered` varchar(255) DEFAULT NULL,
@@ -75,7 +75,7 @@ createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTA
 ) ;
 
 
-CREATE TABLE `orders` (
+CREATE TABLE IF NOT EXISTS `orders` (
 id INT AUTO_INCREMENT NOT NULL,
   `AmazonOrderId` varchar(135) DEFAULT NULL,
   `BuyerEmail` varchar(135) DEFAULT NULL,
@@ -106,7 +106,7 @@ createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTA
   PRIMARY KEY (`id`)
 ) ;
 
-CREATE TABLE `overstock_inventory` (
+CREATE TABLE IF NOT EXISTS `overstock_inventory` (
 id INT AUTO_INCREMENT NOT NULL,
   `Name` varchar(135) DEFAULT NULL,
   `FNSKU` varchar(135) DEFAULT NULL,
@@ -120,4 +120,17 @@ id INT AUTO_INCREMENT NOT NULL,
   `Date_Overstocked` varchar(135) DEFAULT NULL,
 createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
+) ;
+
+CREATE TABLE IF NOT EXISTS `inventory_supply` (
+  id INT AUTO_INCREMENT NOT NULL,
+`Condition` varchar(135),
+`SupplyDetail` varchar(135),
+`TotalSupplyQuantity` INT(11),
+`FNSKU` varchar(135),
+`InStockSupplyQuantity` INT(11),
+`ASIN` varchar(135),
+`SellerSKU` varchar(135),
+createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+PRIMARY KEY (`id`)
 ) ;

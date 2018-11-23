@@ -1,4 +1,4 @@
-let dotenv = require("dotenv").config();
+let dotenv = require("dotenv").config({ path: __dirname + '/../.env' });
 var accessKey = process.env.AWS_ACCESS_KEY_ID || 'YOUR_KEY';
 var accessSecret = process.env.AWS_SECRET_ACCESS_KEY || 'YOUR_SECRET';
 let amazonMws = require('amazon-mws')(accessKey, accessSecret);
@@ -9,76 +9,139 @@ let inquirer = require("inquirer");
 let mysql = require("mysql");
 let moment = require('moment');
 let _ = require('underscore')
-let connection = mysql.createConnection({
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: mySQLPassword,
-    database: "amazon"
-});
-connection.connect(function (err) {
-    if (err) throw err;
-    console.log("connected as id " + connection.threadId + "\n");
+let connection = require('../config/connection');
+let inventory = inventoryBuild();
+function inventoryBuild() {
 
-});
-let inventory = {
-    main: function () {
-    },
-    fulfillmentInventoryRequest: function () {
-
-        amazonMws.fulfillmentInventory.search({
-            'Version': '2010-10-01',
-            'Action': 'ListInventorySupply',
-            'SellerId': SellerID,
-            'MWSAuthToken': MWSAuthToken,
-            'MarketplaceId.Id': 'ATVPDKIKX0DER',
-            'QueryStartDateTime': new Date(2018, 10, 24)
-        }, function (error, response) {
-            if (error) {
-                console.log('error ', error);
-                return;
-            }
-            console.log('response', response);
+    return Object.freeze({
+        main,
+        insertInventory,
+        insertItem,
+        fulfillmentInventoryRequest,
+        inquirer,
+        salesByDay,
+        getAllSellerSKUs
+    })
+    function main() {
+    };
+    function insertInventory(inventory) {
+        inventory.forEach(item => {
+            insertItem(item);
         });
-    },
-    inquirer: function () {
+    };
+    function insertItem(item) {
+        let query = connection.query(
+            "INSERT INTO inventory_supply SET ?",
+            {
+                Condition: item.Condition,
+                SupplyDetail: item.SupplyDetail,
+                TotalSupplyQuantity: item.TotalSupplyQuantity,
+                FNSKU: item.FNSKU,
+                InStockSupplyQuantity: item.InStockSupplyQuantity,
+                ASIN: item.ASIN,
+                SellerSKU: item.SellerSKU
+            },
+            (err, res) => {
+                console.log(err);
+                console.log(res.affectedRows + " order inserted!\n");
+                // Call updateProduct AFTER the INSERT completes
+            }
+        )
+    };
+    function fulfillmentInventoryRequest(nextToken) {
+console.log('running with nextToken: '+nextToken);
+        amazonMws.fulfillmentInventory.search((nextToken) ? {
+            'Version': '2010-10-01',
+            'Action': 'ListInventorySupplyByNextToken',
+            'SellerId': SellerId,
+            'MWSAuthToken': MWSAuthToken,
+            'MarketplaceId': 'ATVPDKIKX0DER',
+            'QueryStartDateTime': new Date(2018, 9, 24),
+            'NextToken': NextToken,
+        } : {
+                'Version': '2010-10-01',
+                'Action': 'ListInventorySupply',
+                'SellerId': SellerId,
+                'MWSAuthToken': MWSAuthToken,
+                'MarketplaceId': 'ATVPDKIKX0DER',
+                'QueryStartDateTime': new Date(2018, 9, 24)
+            }, (error, response) => {
+                if (error) {
+                    console.log('fulfillmentInventory error Code: ', error.Code);
+                    if (error.Code == 'RequestThrottled') {
+                        console.log('restarting due to request throttled');
+                        setTimeout(
+                            function () { fulfillmentInventoryRequest(nextToken) }, 180000);
+                    }
+                    return;
+                }
+                let inventory = response.InventorySupplyList.member; // TODO: This is an array of my Amazon FBA Inventory supply.  Insert this into mySQL database 
+                insertInventory(inventory);
+                if (response.NextToken) { console.log('Next Token: ' + response.NextToken); }
+                if (response.NextToken) {
+                    NextToken = (response.NextToken);
+                    setTimeout(
+                        function () { fulfillmentInventoryRequest(NextToken) }, 180000);
+                }
+                setTimeout( removeDuplicates,360000);
+
+
+                return;
+            });
+    };
+    function removeDuplicates(){
+        
+        let query = connection.query(`
+        DELETE t1 FROM inventory_supply
+         t1
+                INNER JOIN
+            inventory_supply
+         t2 
+        WHERE
+            t2.id > t1.id AND t1.sellerSKU = t2.sellerSKU;
+        
+        `, (err, results) => {
+        console.log('finished removing duplicates');        return;
+            });
+    };
+    function inquirer() {
         inquirer
             .prompt([
-    // Here we create a basic text prompt.
-    {
-        type: "list",
-        message: "Which SKU would you like?",
-        choices: this.SKUsArray,
-        name: "SKU"
-    },
-    {
-        type: "list",
-        message: "How would you like the results?",
-        choices: ["BY DAY", "BY WEEK", "BY MONTH"],
-        name: "org"
-    },
-])
-    .then((res) => {
-        switch (res.org) {
-            case "BY DAY":
-                this.salesByDay(res.SKU)
-                break;
-            case "BY WEEK":
-                console.log("By Week"); //TODO:
-                break;
-            case "BY MONTH":
-                console.log("By Month");    //TODO:
-                break;
+                // Here we create a basic text prompt.
+                {
+                    type: "list",
+                    message: "Which SKU would you like?",
+                    choices: this.SKUsArray,
+                    name: "SKU"
+                },
+                {
+                    type: "list",
+                    message: "How would you like the results?",
+                    choices: ["BY DAY", "BY WEEK", "BY MONTH"],
+                    name: "org"
+                },
+            ])
+            .then((res) => {
+                switch (res.org) {
+                    case "BY DAY":
+                        this.salesByDay(res.SKU)
+                        break;
+                    case "BY WEEK":
+                        console.log("By Week"); //TODO:
+                        break;
+                    case "BY MONTH":
+                        console.log("By Month");    //TODO:
+                        break;
 
-            default:
-                break;
-        }
-    });
+                    default:
+                        break;
+                }
+            });
 
 
-    },
-salesByDay: function (msku) {
-    var query = connection.query(`SELECT
+    };
+    function salesByDay(msku) {
+        var query = connection.query(`SELECT
         o.AmazonOrderId,
     o.PurchaseDate,
     i.SellerSKU,
@@ -87,21 +150,21 @@ salesByDay: function (msku) {
     orders o
     LEFT JOIN order_items i ON o.AmazonOrderId = i.AmazonOrderId
     WHERE ?`, { SellerSKU: msku }, (err, results) => {
-            let dateArr = [];
-            results.forEach(element => {
-                let orderQty = element.QuantityOrdered;
-                for (i = 0; i < orderQty; i++) {
-                    dateArr.push(moment(element.PurchaseDate).format("MM-DD-YYYY"));
-                }
-            });
-            var counts = _.countBy(dateArr);
-            console.log(counts);
-            return (counts);
-        })
-},
-getAllSellerSKUs: function () {
+                let dateArr = [];
+                results.forEach(element => {
+                    let orderQty = element.QuantityOrdered;
+                    for (i = 0; i < orderQty; i++) {
+                        dateArr.push(moment(element.PurchaseDate).format("MM-DD-YYYY"));
+                    }
+                });
+                var counts = _.countBy(dateArr);
+                console.log(counts);
+                return (counts);
+            })
+    };
+    function getAllSellerSKUs() {
 
-}
+    };
 }
 
 inventory.fulfillmentInventoryRequest();

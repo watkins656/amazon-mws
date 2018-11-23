@@ -51,7 +51,7 @@ var orm = {
     });
   },
   allOrdersByPurchaseDate: function (tableInput, cb) {
-    var queryString = "SELECT * FROM " + tableInput + " ORDER BY PurchaseDate DESC;";
+    var queryString = "SELECT * FROM " + tableInput + " ORDER BY PurchaseDate DESC LIMIT 100;";
     connection.query(queryString, function (err, result) {
       if (err) {
 console.log(err);

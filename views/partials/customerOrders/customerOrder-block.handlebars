@@ -1,13 +1,24 @@
 <li>
-	Order # {{id}}	||	
-	{{AmazonOrderId}}	||	
- 	Order Date: {{PurchaseDate}}	||	
-	<button class="change-sleep" data-id="{{id}}" data-newsleep="{{sleep}}">
-		{{#if pending}}This order is Pending!{{else}}This order is completed!{{/if}}
-	</button><button class="delete" data-id="{{id}}">delete</button>
+	Order # {{id}} ||
+	{{AmazonOrderId}} ||
+	Order Date: {{PurchaseDate}} ||
+
+
+	{{#iff OrderStatus '==' 'Pending'}}
+<div class="btn btn-info">
+	This order is pending
+</div>
+	{{/iff}}
+	{{#iff OrderStatus '==' 'Canceled'}}
+<div class="btn btn-danger">
+	This order was canceled
+</div>
+	{{/iff}}
+
+	{{#iff OrderStatus '==' 'Shipped'}}
+<div class="btn btn-success">
+	This order was shipped
+</div>
+	{{/iff}}
+
 </li>
-
-
-
-
-

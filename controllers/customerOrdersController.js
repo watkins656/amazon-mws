@@ -7,7 +7,6 @@ let dotenv = require('dotenv').config({ path: __dirname + '/.env' })
 
 const Dustin = process.env.DUSTIN;
 const Megan = process.env.MEGAN;
-const Lenora = process.env.LENORA;
 // Import the model (customerOrder.js) to use its database functions.
 var customerOrder = require("../models/customerOrders.js");
 var customerOrderItem = require("../models/customerOrderItems.js");

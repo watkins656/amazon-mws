@@ -1,20 +1,20 @@
 USE 
-amazon;
+g19kgxd0tyqbpecb;
 
 SELECT 
-    sku, COUNT(sku)
+    sellerSKU, COUNT(sellerSKU)
 FROM
-    amazon.inventory_health
+inventory_supply
 GROUP BY 
-    sku
+    sellerSKU
 HAVING 
-    COUNT(sku) > 1;
+    COUNT(sellerSKU) > 1;
 
-DELETE t1 FROM     amazon.inventory_health
+DELETE t1 FROM inventory_supply
  t1
         INNER JOIN
-        amazon.inventory_health
+    inventory_supply
  t2 
 WHERE
-    t2.id < t1.id AND t1.sku = t2.sku;
+    t2.id < t1.id AND t1.sellerSKU = t2.sellerSKU;
 
