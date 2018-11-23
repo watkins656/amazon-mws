@@ -92,10 +92,10 @@ function orders() {
                     setTimeout(
                         function () { request(NextToken) }, 180000);
                 }
-                // else {
-                // require('./orderItems.js');
-                // main();
-                // }
+                else {
+                    setTimeout(
+                        function () { request() }, 180000);  
+                }
                 return;
             });
     };
