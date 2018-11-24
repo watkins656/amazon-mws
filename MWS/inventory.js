@@ -56,7 +56,7 @@ console.log('running with nextToken: '+nextToken);
             'SellerId': SellerId,
             'MWSAuthToken': MWSAuthToken,
             'MarketplaceId': 'ATVPDKIKX0DER',
-            'QueryStartDateTime': new Date(2018, 9, 24),
+            'QueryStartDateTime': new Date(2016, 9, 24),
             'NextToken': NextToken,
         } : {
                 'Version': '2010-10-01',
@@ -64,7 +64,7 @@ console.log('running with nextToken: '+nextToken);
                 'SellerId': SellerId,
                 'MWSAuthToken': MWSAuthToken,
                 'MarketplaceId': 'ATVPDKIKX0DER',
-                'QueryStartDateTime': new Date(2018, 9, 24)
+                'QueryStartDateTime': new Date(2016, 9, 24)
             }, (error, response) => {
                 if (error) {
                     console.log('fulfillmentInventory error Code: ', error.Code);
