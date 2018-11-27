@@ -69,7 +69,7 @@ function orderItemsBuild() {
         removeDuplicates();
 
         console.log("Getting Orders");
-        var query = connection.query("SELECT AmazonOrderId FROM orders ORDER BY id DESC LIMIT 9000", (err, results) => {
+        var query = connection.query("SELECT AmazonOrderId FROM orders ORDER BY id ASC LIMIT 9000", (err, results) => {
             if (err) { console.log('error: ' + err); }
             else {
                 newArray = [];
