@@ -1,0 +1,73 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
+    crossorigin="anonymous">
+<div class="container">
+    <div class="row">
+
+        <div class="col col-sm-6">
+            <div id="input-form">
+
+                <h1>
+                    ADD A NEW ORDER
+                </h1>
+                <form>
+                    Order ID (required): <input type="text" id="orderId" name="orderId"><br>
+                    Supplier ID (required): <input type="text" id="supplierId" name="supplierId"><br>
+                    Order Date (required): <input type="text" id="orderDate" name="orderDate"><br>
+                    Recieved Date: <input type="text" id="recievedDate" name="recievedDate"><br>
+                    Amazon Recieved Date: <input type="text" id="amazonRecievedDate" name="amazonRecievedDate"><br>
+
+                    <div class="btn btn-info" type="submit" id="submit-button">Add Order</div>
+                </form>
+            </div>
+        </div>
+        <div class="col col-sm-6">
+            <br>
+            <br>
+            <br>
+            <br>
+            <a href="/createOrder">
+                <div class="btn btn-info" id="create-button">Create a New Order</div>
+            </a>
+
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery.js"></script>
+
+    <script>
+
+
+        $("#submit-button").on("click", (event) => {
+            event.preventDefault();
+
+            let newOrder = {
+                orderId: $("#orderId").val().trim(),
+                supplierId: $("#supplierId").val().trim(),
+                orderDate: $("#orderDate").val().trim(),
+                recievedDate: $("#recievedDate").val().trim(),
+                amazonRecievedDate: $("#amazonRecievedDate").val().trim()
+            };
+
+            $.post("/api/supplierOrderStatus/update/" + id, newOrder)
+                .then(function (data) {
+                    console.log("add.html", data);
+                    alert("Adding order...");
+                });
+        })
+
+
+
+    </script>
+
+    <div class="row">
+
+
+        <div id="supplierOrders">
+            {{#each supplierOrders}}
+
+            {{> customerOrders/supplierOrder-block}}
+            {{/each}}
+        </div>
+
+    </div>
+</div>

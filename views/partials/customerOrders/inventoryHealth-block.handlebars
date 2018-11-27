@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+  crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -24,6 +26,9 @@
           This SKU has SLOW SALES - "Click to View Live on Amazon"
         </a>
         {{/iff}}
+        <a href="http://asin.info/a/{{asin}}" class="btn btn-danger" data-id="{{id}}">
+          <i class="fab fa-amazon"></i>
+        </a>
       </span>
       <div class="progress">
         <div class="progress-bar 
@@ -46,9 +51,10 @@
           <span class="">{{percent}}% Stocked</span>
         </div>
 
-      </div>      <div class="progress">
-        <div class="progress-bar progress-bar-success"
-          role="progressbar" aria-valuenow="{{id}}" aria-valuemin="0" aria-valuemax="100" style="width:90%">
+      </div>
+      <div class="progress">
+        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{id}}" aria-valuemin="0"
+          aria-valuemax="100" style="width:90%">
           <span class="">90% Stocked</span>
         </div>
 

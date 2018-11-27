@@ -2,19 +2,19 @@ USE
 g19kgxd0tyqbpecb;
 
 SELECT 
-    sellerSKU, COUNT(sellerSKU)
+    `OrderItemId`, COUNT(`OrderItemId`)
 FROM
-inventory_supply
+order_items
 GROUP BY 
-    sellerSKU
+    `OrderItemId`
 HAVING 
-    COUNT(sellerSKU) > 1;
+    COUNT(`OrderItemId`) > 1;
 
-DELETE t1 FROM inventory_supply
+DELETE t1 FROM order_items
  t1
         INNER JOIN
-    inventory_supply
+    order_items
  t2 
 WHERE
-    t2.id < t1.id AND t1.sellerSKU = t2.sellerSKU;
+    t2.id < t1.id AND t1.`OrderItemId` = t2.`OrderItemId`;
 

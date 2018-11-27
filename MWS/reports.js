@@ -1,4 +1,4 @@
-let dotenv = require("dotenv").config();
+let dotenv = require("dotenv").config({ path: __dirname + '/../.env' });
 var accessKey = process.env.AWS_ACCESS_KEY_ID || 'YOUR_KEY';
 var accessSecret = process.env.AWS_SECRET_ACCESS_KEY || 'YOUR_SECRET';
 let mySQLPassword = process.env.MYSQL_PASSWORD;
@@ -8,17 +8,7 @@ let SellerId = process.env.MWS_SELLER_ID;
 let mysql = require("mysql");
 let inquirer = require('inquirer');
 let fs = require('fs')
-let connection = mysql.createConnection({
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: mySQLPassword,
-    database: "amazon"
-});
-connection.connect(function (err) {
-    if (err) throw err;
-    console.log("connected as id " + connection.threadId + "\n");
-});
+let connection = require('../config/connection')
 
 let reportListRequest = function () {
 
@@ -44,7 +34,7 @@ function reportRequest() {
         'Action': 'GetReport',
         'SellerId': SellerId,
         'MWSAuthToken': MWSAuthToken,
-        'ReportId': '12174047343017849'
+        'ReportId': '12341990984017860'
     }, function (error, response) {
         if (error) {
             console.log('error ', error);
@@ -53,17 +43,7 @@ function reportRequest() {
         response.data.forEach(element => {
             reports.updateInventoryHealthTable(element);
         });
-        let removeDuplicates = connection.query(`
-        
-DELETE t1 FROM     amazon.inventory_health
-t1
-   INNER JOIN
-   amazon.inventory_health
-t2 
-WHERE
-t2.id < t1.id AND t1.sku = t2.sku;
-
-`, (err, res) => {
+        let removeDuplicates = connection.query(`DELETE t1 FROM inventory_health t1 INNER JOIN inventory_health t2 WHERE t2.id < t1.id AND t1.sku = t2.sku;`, (err, res) => {
                 if (err)
                     console.log(err);
                 else

@@ -11,7 +11,9 @@
     "inquirer": "^6.2.0",
     "moment": "^2.22.2",
     "mysql": "^2.16.0",
+    "mysql2": "^1.6.4",
     "papaparse": "^4.6.1",
+    "sequelize": "^4.41.2",
     "underscore": "^1.9.1"
   },
   "devDependencies": {},

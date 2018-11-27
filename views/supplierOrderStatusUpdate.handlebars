@@ -1,0 +1,70 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
+    crossorigin="anonymous">
+<div id="input-form">
+<h1>
+UPDATE ORDER
+</h1>
+    {{#each supplierOrders}}
+
+    <form id="update-form" data-id={{id}}>
+        Order ID (required): <input type="text" id="orderId" name="orderId" value="{{orderId}}"><br>
+        Supplier ID (required): <input type="text" id="supplierId" name="supplierId" value="{{supplierId}}"><br>
+        Order Date (required): <input type="text" id="orderDate" name="orderDate" value="{{orderDate}}"><br>
+        Recieved Date: <input type="text" id="recievedDate" name="recievedDate" value="{{recievedDate}}"><br>
+        Amazon Recieved Date: <input type="text" id="amazonRecievedDate" name="amazonRecievedDate" value="{{amazonRecievedDate}}"><br>
+
+        <div class="btn btn-info" type="submit" id="submit-button">Update Order</div>
+    </form>
+    {{/each}}
+
+</div>
+
+<script src="https://code.jquery.com/jquery.js"></script>
+
+<script>
+
+
+    $("#submit-button").on("click", (event) => {
+        event.preventDefault();
+        let id = $('#update-form').attr("data-id");
+        let ajaxURL = "/api/supplierOrderStatus/update/" + id;
+        console.log(id);
+        let newOrder = {
+            orderId: $("#orderId").val().trim(),
+            supplierId: $("#supplierId").val().trim(),
+            orderDate: $("#orderDate").val().trim(),
+            recievedDate: $("#recievedDate").val().trim(),
+            amazonRecievedDate: $("#amazonRecievedDate").val().trim()
+        };
+
+        $.ajax({
+            url: ajaxURL,
+            type: 'PUT',
+            data: newOrder,
+            success: function (data) {
+                alert("Updating order...");
+                window.location.href="/supplierOrderStatus"
+            }
+        });
+    });
+
+
+
+</script>
+
+
+
+<div id="supplierOrders">
+    {{#each supplierOrders}}
+
+    <li>
+        Order # {{id}} ||
+        {{supplierId}} ||
+        Order Date: {{orderDate}} ||
+        Recieved: {{recievedDate}} ||
+        Amazon Recieved: {{amazonRecievedDate}}
+        <div class="btn btn-info">Update</div>
+    </li>
+    {{/each}}
+
+</div>

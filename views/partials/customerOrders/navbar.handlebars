@@ -1,3 +1,9 @@
+    <a href="/customerOrders">Customer Orders</a> | 
+    <a href="/customerOrderItems">Customer Order Items</a>  |  
+    <a href="/inventoryHealth">Inventory Health</a>  |  
+    <a href="/supplierOrderStatus">Supplier Order Status</a>  |  
+
+
 <p id="MyP">Amazon SellBy Date is: </p>
 
 <script>
@@ -5,7 +11,7 @@
   Date.prototype.addDays = function(days) {
     var date = new Date(this.valueOf());
     date.setDate(date.getDate() + days);
-    return date;
+    return date.toDateString();
 }
 
 
