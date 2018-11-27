@@ -69,12 +69,13 @@ function orderItemsBuild() {
         removeDuplicates();
 
         console.log("Getting Orders");
-        var query = connection.query("SELECT AmazonOrderId FROM orders ORDER BY id ASC LIMIT 9000", (err, results) => {
+        var query = connection.query("SELECT AmazonOrderId FROM orders WHERE AmazonOrderId NOT IN (SELECT AmazonOrderId FROM order_items) LIMIT 1000", (err, results) => {
             if (err) { console.log('error: ' + err); }
             else {
                 newArray = [];
                 results.forEach(element => {
                     console.log("order ID: " + element.AmazonOrderId);
+                    
                     let q = connection.query("SELECT * FROM order_items WHERE ?", { AmazonOrderId: element.AmazonOrderId },
                         (err, response) => {
                             if (err) {
