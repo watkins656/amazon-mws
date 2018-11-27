@@ -9,7 +9,7 @@ const Dustin = process.env.DUSTIN;
 const Megan = process.env.MEGAN;
 // Import the model (customerOrder.js) to use its database functions.
 let db=require('../modelsSequelize');
-var supplierOrderStatus = require("../modelsSequelize/supplier_Order_Status.js");
+var supplierOrderStatus = require("../modelsSequelize/supplier_order_status.js");
 var customerOrder = require("../models/customerOrders.js");
 var customerOrderItem = require("../models/customerOrderItems.js");
 var inventoryHealth = require("../models/inventoryHealth.js");
