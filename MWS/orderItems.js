@@ -11,6 +11,7 @@ let connection = require('../config/connection');
 let counter = 0;
 let orderItems = orderItemsBuild();
 setInterval(() => {orderItems.getOrders()}, 900000);
+orderItems.getOrders();
 
 
 
