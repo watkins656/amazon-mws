@@ -10,7 +10,7 @@ let connection = require('../config/connection');
 
 let counter = 0;
 let orderItems = orderItemsBuild();
-orderItems.getOrders();
+setInterval(() => {orderItems.getOrders()}, 900000);
 
 
 
@@ -76,7 +76,7 @@ function orderItemsBuild() {
           FROM order_items AS b 
           WHERE a.AmazonOrderId=b.AmazonOrderId 
         )
-        LIMIT 1000;
+        LIMIT 100;
         `, (err, results) => {
             if (err) { console.log('error: ' + err); }
             else {

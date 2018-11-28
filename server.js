@@ -1,3 +1,4 @@
+require('newrelic');
 var express = require("express");
 let dotenv = require('dotenv').config({ path: __dirname + '/.env' })
 

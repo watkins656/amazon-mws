@@ -8,8 +8,9 @@ let dotenv = require('dotenv').config({ path: __dirname + '/.env' })
 const Dustin = process.env.DUSTIN;
 const Megan = process.env.MEGAN;
 // Import the model (customerOrder.js) to use its database functions.
-let db=require('../modelsSequelize');
+let db = require('../modelsSequelize');
 var supplierOrderStatus = require("../modelsSequelize/supplier_order_status.js");
+var supplierOrder = require("../modelsSequelize/supplierOrder.js");
 var customerOrder = require("../models/customerOrders.js");
 var customerOrderItem = require("../models/customerOrderItems.js");
 var inventoryHealth = require("../models/inventoryHealth.js");
@@ -18,65 +19,65 @@ var overstock = require("../models/overstock.js");
 // Create all our routes and set up logic within those routes where required.
 router.get("/", function (req, res) {
   customerOrder.allOrdersByPurchaseDate(function (data) {
-    let hbsObject={};
-    if(data){
+    let hbsObject = {};
+    if (data) {
 
-     hbsObject = {
-      customerOrders: data
-    };
-  }
+      hbsObject = {
+        customerOrders: data
+      };
+    }
     // console.log(hbsObject);
     res.render("index", hbsObject);
   });
 });
 router.get("/supplierOrderStatus", function (req, res) {
-    // console.log(hbsObject);
-    db.supplierOrderStatus.findAll({}).then(function (data) {
-      let hbsObject={};
-      if(data){
-  
-       hbsObject = {
+  // console.log(hbsObject);
+  db.supplierOrderStatus.findAll({}).then(function (data) {
+    let hbsObject = {};
+    if (data) {
+
+      hbsObject = {
         supplierOrders: data
       };
     }
-      // console.log(hbsObject);
-      
-      res.render("supplierOrderStatus", hbsObject);
-    });
+    // console.log(hbsObject);
+
+    res.render("supplierOrderStatus", hbsObject);
   });
+});
 router.get("/supplierOrderStatus/update/:id", function (req, res) {
-    // console.log(hbsObject);
-    db.supplierOrderStatus.findAll({where:{id:req.params.id}}).then(function (data) {
-      let hbsObject={};
-      if(data){
-  
-       hbsObject = {
+  // console.log(hbsObject);
+  db.supplierOrderStatus.findAll({ where: { id: req.params.id } }).then(function (data) {
+    let hbsObject = {};
+    if (data) {
+
+      hbsObject = {
         supplierOrders: data
       };
     }
-      // console.log(hbsObject);
-      
-      res.render("supplierOrderStatusUpdate", hbsObject);
-    });
+    // console.log(hbsObject);
+
+    res.render("supplierOrderStatusUpdate", hbsObject);
   });
+});
 
 router.get("/landing/:uid", function (req, res) {
   customerOrder.allOrdersByPurchaseDate(function (data) {
-    let hbsObject={};
-    if(data){
+    let hbsObject = {};
+    if (data) {
 
-     hbsObject = {
+      hbsObject = {
         customerOrders: data
       };
-      
+
     }
-      let uid = (req.params.uid);
+    let uid = (req.params.uid);
     // console.log(hbsObject);
-    if (uid === Dustin || uid === Megan|| uid === Lenora) {
+    if (uid === Dustin || uid === Megan || uid === Lenora) {
       console.log("correct user");
       res.render("landing", hbsObject);
     }
-    else{
+    else {
       res.end(`No Way Jose`)
     }
 
@@ -115,11 +116,17 @@ router.get("/customerOrders", function (req, res) {
 
 router.get("/createOrder", function (req, res) {
   customerOrder.allOrdersByPurchaseDate(function (data) {
-    var hbsObject = {
-      customerOrders: data
-    };
-    // console.log(hbsObject);
-    res.render("createOrder", hbsObject);
+    inventoryHealth.all(function (SKUs) {
+      db.supplierOrder.findAll({}).then(function (supplierOrder) {
+        var hbsObject = {
+          customerOrders: data,
+          SKUs: SKUs,
+          supplierOrder: supplierOrder
+        };
+        // console.log(hbsObject);
+        res.render("createOrder", hbsObject);
+      });
+    });
   });
 });
 router.get("/addProductsToOrder", function (req, res) {
@@ -163,8 +170,8 @@ router.post("/api/supplierOrderStatus", function (req, res) {
 router.put("/api/supplierOrderStatus/update/:id", function (req, res) {
   let newOrder = req.body;
   let id = req.params.id;
-  db.supplierOrderStatus.update(newOrder,{
-    where:{id:id}
+  db.supplierOrderStatus.update(newOrder, {
+    where: { id: id }
   }).then(function (result) {
     res.json({ id: result.insertId });
     res.json(result);

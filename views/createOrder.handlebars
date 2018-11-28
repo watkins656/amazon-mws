@@ -13,7 +13,7 @@
                     Order ID (required): <input type="text" id="orderId" name="orderId"><br>
                     Supplier ID (required): <input type="text" id="supplierId" name="supplierId"><br>
                     Order Date (required): <input type="text" id="orderDate" name="orderDate"><br>
-                    
+
                     <div class="btn btn-info" type="submit" id="submit-button">Add Order</div>
                 </form>
             </div>
@@ -31,35 +31,29 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery.js"></script>
 
-<script>
+<div class="bg-secondary text-white" id="order-build-display">
+    <h3>
+        Current Order:
+    </h3>
 
+    <ul>
+        {{#each supplierOrder}}
 
-    $("#submit-button").on("click", (event) => {
-        event.preventDefault();
+        {{> customerOrders/supplierOrder-item}}
 
-        let newOrder = {
-            orderId: $("#orderId").val().trim(),
-            supplierId: $("#supplierId").val().trim(),
-            orderDate: $("#orderDate").val().trim(),
-            recievedDate: $("#recievedDate").val().trim(),
-            amazonRecievedDate: $("#amazonRecievedDate").val().trim()
-        };
+        {{/each}}
+    </ul>
 
-        $.post("/api/supplierOrderStatus/update/" + id, newOrder)
-            .then(function (data) {
-                console.log("add.html", data);
-                alert("Adding order...");
-            });
-    })
+</div>
+<div id="sku-choices">
 
+    <ul>
+        {{#each SKUs}}
 
+        {{> customerOrders/skus-block}}
 
-</script>
+        {{/each}}
+    </ul>
 
-
-
-<div id="products">
-    Products will go here
 </div>
