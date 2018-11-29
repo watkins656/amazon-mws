@@ -167,6 +167,16 @@ router.post("/api/supplierOrderStatus", function (req, res) {
     res.json(result);
   });
 });
+router.post("/api/supplierOrderStatus/update/:id", function (req, res) {
+  let newOrder = req.body;
+  let id = req.params.id;
+  db.supplierOrderStatus.create(newOrder, {
+    
+  }).then(function (result) {
+    res.json({ id: result.insertId });
+    res.json(result);
+  });
+});
 router.put("/api/supplierOrderStatus/update/:id", function (req, res) {
   let newOrder = req.body;
   let id = req.params.id;

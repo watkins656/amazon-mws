@@ -34,7 +34,7 @@ function reportRequest() {
         'Action': 'GetReport',
         'SellerId': SellerId,
         'MWSAuthToken': MWSAuthToken,
-        'ReportId': '12341990984017860'
+        'ReportId': '12383591239017863'
     }, function (error, response) {
         if (error) {
             console.log('error ', error);
@@ -43,7 +43,7 @@ function reportRequest() {
         response.data.forEach(element => {
             reports.updateInventoryHealthTable(element);
         });
-        let removeDuplicates = connection.query(`DELETE t1 FROM inventory_health t1 INNER JOIN inventory_health t2 WHERE t2.id < t1.id AND t1.sku = t2.sku;`, (err, res) => {
+        let removeDuplicates = connection.query(`DELETE t1 FROM inventory_health t1 INNER JOIN inventory_health t2 WHERE t2.id > t1.id AND t1.sku = t2.sku;`, (err, res) => {
                 if (err)
                     console.log(err);
                 else

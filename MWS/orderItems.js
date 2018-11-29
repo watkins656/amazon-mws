@@ -77,7 +77,7 @@ function orderItemsBuild() {
           FROM order_items AS b 
           WHERE a.AmazonOrderId=b.AmazonOrderId 
         )
-        LIMIT 100;
+        LIMIT 1000;
         `, (err, results) => {
             if (err) { console.log('error: ' + err); }
             else {

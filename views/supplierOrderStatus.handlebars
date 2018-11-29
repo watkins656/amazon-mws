@@ -48,7 +48,7 @@
                 amazonRecievedDate: $("#amazonRecievedDate").val().trim()
             };
 
-            $.post("/api/supplierOrderStatus/update/" + id, newOrder)
+            $.post("/api/supplierOrderStatus/update/" + $("#orderId").val().trim(), newOrder)
                 .then(function (data) {
                     console.log("add.html", data);
                     alert("Adding order...");
