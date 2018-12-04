@@ -52,20 +52,21 @@ if (process.env.NODE_ENV === "test") {
 }
 
 // Start our server so that it can begin listening to client requests.
-db.sequelize.sync({}).then(function() {
+db.sequelize.sync({}).then(function () {
 
-// Start our server so that it can begin listening to client requests.
-app.listen(PORT, function () {
-  // Log (server-side) when our server has started
-  console.log("Server listening on: http://localhost:" + PORT);
+  // Start our server so that it can begin listening to client requests.
+  app.listen(PORT, function () {
+    // Log (server-side) when our server has started
+    console.log("Server listening on: http://localhost:" + PORT);
+  });
 });
 
 
 let connection = require('./config/connection')
-let sequelize= require('./config/connectionSequelize')
+let sequelize = require('./config/connectionSequelize')
 
 
 setTimeout(() => {
   let orders = require("./MWS/ordersForInterval");
   let orderItems = require("./MWS/orderItems");
-  }, 30000);
+}, 30000);
