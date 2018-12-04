@@ -1,14 +1,11 @@
 // require('newrelic');
-let dotenv = require('dotenv').config({ path: __dirname + '/.env' })
 var express = require("express");
-var exphbs = require('express-handlebars');
-
-var db = require("./modelsSequelize");
+let dotenv = require('dotenv').config({ path: __dirname + '/.env' })
 
 
 var PORT = process.env.PORT || 8060;
-var app = express();
 
+var app = express();
 
 // Serve static content for the app from the "public" directory in the application directory.
 app.use(express.static("public"));
@@ -17,6 +14,12 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+
+
+
+// I've changed this from engine to exphbs,
+// so there is no confusion with the express engine object that we use later.
+var exphbs = require('express-handlebars');
 
 // Create an instance of the express-handlebars
 // If you want to pass any option offered by express-handlebar module
@@ -43,30 +46,14 @@ var routes = require("./controllers/customerOrdersController.js");
 
 app.use(routes);
 
-var syncOptions = { force: false };
-
-// If running a test, set syncOptions.force to true
-// clearing the `testdb`
-if (process.env.NODE_ENV === "test") {
-  syncOptions.force = true;
-}
-
 // Start our server so that it can begin listening to client requests.
-db.sequelize.sync({}).then(function () {
-
-  // Start our server so that it can begin listening to client requests.
-  app.listen(PORT, function () {
-    // Log (server-side) when our server has started
-    console.log("Server listening on: http://localhost:" + PORT);
-  });
+app.listen(PORT, function () {
+  // Log (server-side) when our server has started
+  console.log("Server listening on: http://localhost:" + PORT);
 });
 
 
 let connection = require('./config/connection')
-let sequelize = require('./config/connectionSequelize')
 
-
-setTimeout(() => {
-  let orders = require("./MWS/ordersForInterval");
-  let orderItems = require("./MWS/orderItems");
-}, 30000);
+let orders = require("./MWS/ordersForInterval");
+let orderItems = require("./MWS/orderItems");
