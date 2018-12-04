@@ -50,20 +50,35 @@ var orm = {
       cb(result);
     });
   },
+  allWhere: function (tableInput, whereInput, cb) {
+    var queryString = "SELECT * FROM " + tableInput + " WHERE " + whereInput + ";";
+    connection.query(queryString, function (err, result) {
+      if (err) {
+        console.log(err);
+      }
+      if (result) {
+
+        cb(result);
+      }
+      else {
+        cb({});
+      }
+    });
+  },
   allOrdersByPurchaseDate: function (tableInput, cb) {
     var queryString = "SELECT * FROM " + tableInput + " ORDER BY PurchaseDate DESC LIMIT 100;";
     connection.query(queryString, function (err, result) {
       if (err) {
-console.log(err);
+        console.log(err);
       }
-      if(result){
+      if (result) {
 
         cb(result);
       }
-      else{
+      else {
         cb({});
       }
-    }); 
+    });
   },
   create: function (table, cols, vals, cb) {
     var queryString = "INSERT INTO " + table;
