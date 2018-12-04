@@ -55,5 +55,7 @@ app.listen(PORT, function () {
 
 let connection = require('./config/connection')
 
-let orders = require("./MWS/ordersForInterval");
-let orderItems = require("./MWS/orderItems");
+setTimeout(() => {
+  let orders = require("./MWS/ordersForInterval");
+  let orderItems = require("./MWS/orderItems");
+  }, 30000);
