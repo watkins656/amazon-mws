@@ -35,29 +35,45 @@
     <script src="https://code.jquery.com/jquery.js"></script>
 
     <script>
+        $(document).ready(function(){
 
+            $('.delete-button').click(function(event) {
+                event.preventDefault();
+                let id = $(this).data('id');
+                console.log('id: ' + id)
+                $.ajax({
+                    type: "DELETE",
+                    url: 'api/supplierOrderStatus/' + id,
+                }).then(
+                    function () {
+                        console.log("deleted id ", id);
+                        // Reload the page to get the updated list
+                            location.reload();
 
-        $("#submit-button").on("click", (event) => {
-            event.preventDefault();
+                    }
+                );
 
-            let newOrder = {
-                orderId: $("#orderId").val().trim(),
-                supplierId: $("#supplierId").val().trim(),
-                orderDate: $("#orderDate").val().trim(),
-                recievedDate: $("#recievedDate").val().trim(),
-                amazonRecievedDate: $("#amazonRecievedDate").val().trim()
-            };
+            });
+            $("#submit-button").on("click", (event) => {
+                event.preventDefault();
 
-            $.post("/api/supplierOrderStatus/update/" + $("#orderId").val().trim(), newOrder)
-                .then(function (data) {
-                    console.log("add.html", data);
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000)
-                });
+                let newOrder = {
+                    orderId: $("#orderId").val().trim(),
+                    supplierId: $("#supplierId").val().trim(),
+                    orderDate: $("#orderDate").val().trim(),
+                    recievedDate: $("#recievedDate").val().trim(),
+                    amazonRecievedDate: $("#amazonRecievedDate").val().trim()
+                };
 
-        })
-
+                $.post("/api/supplierOrderStatus/update/" + $("#orderId").val().trim(), newOrder)
+                    .then(function (data) {
+                        console.log("add.html", data);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000)
+                    });
+            })
+});
 
 
     </script>

@@ -1,4 +1,4 @@
-<li>
+<li class='outlined'>
 	Order # {{orderId}} ||
 	{{supplierId}} ||
 	Order Date: {{orderDate}} ||
@@ -7,8 +7,5 @@
 	<a href="/supplierOrderStatus/update/{{id}}">
 		<div class="btn btn-info">Update</div>
 	</a>
-		<div id="delete-button" class="btn btn-danger">Delete</div>
+	<div  data-id="{{id}}" class="btn btn-danger delete-button">Delete</div>
 </li>
-<script>
-	$('#delete-button') //TODO:
-</script>

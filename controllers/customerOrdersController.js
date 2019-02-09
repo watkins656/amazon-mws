@@ -218,8 +218,24 @@ router.put("/api/customerOrders/:id", function (req, res) {
     }
   });
 });
+router.delete("/api/supplierOrderStatus/:id", function (req, res) {
+  var condition = "id = " + req.params.id;
+
+  console.log("condition", condition);
+
+  db.supplierOrderStatus.destroy({
+    where: {
+      id: req.params.id
+    }
+  }).then(function(dbTodo) {
+    res.json(dbTodo);
+  });
+
+});
+
 router.delete("/api/customerOrders/:id", function (req, res) {
   var condition = "id = " + req.params.id;
+  
 
   console.log("condition", condition);
 
